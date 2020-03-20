@@ -34,8 +34,20 @@ class App extends React.Component {
 
   // GET REALTIME documents from DB
   componentDidUpdate(){
-    db.collection("students").onSnapshot((snapshot) => { 
-      console.log("Current data: ", snapshot.data());
+    db.collection("students").onSnapshot((snapshot) => {
+      let changes = snapshot.docChanges()
+      let studentList = this.state.Students
+      changes.forEach(change => { 
+        if(changes.type == 'added'){
+          studentList.push(change.doc)
+        } else if (change.type == 'removed'){
+          const index = studentList.indexOf(change.doc.id);
+          if (index > -1) {
+            studentList.splice(index, 1);
+          }
+        }
+      }) 
+      this.setState({Students: studentList})
     });
   }
 
