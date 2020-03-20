@@ -32,6 +32,7 @@ class App extends React.Component {
     })   
   }
 
+  // TODO: need to fix realtime update
   // GET REALTIME documents from DB
   componentDidUpdate(){
     db.collection("students").onSnapshot((snapshot) => {
